@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Er = () => {
+const Ceil = () => {
   return (
     <div>
-      <h1>CLI</h1>
+      <h1>CAIL</h1>
     </div>
   );
 }
 
-export default Er;
+export default Ceil;

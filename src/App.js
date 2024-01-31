@@ -1,7 +1,7 @@
 import Header from "./Components/Header"
 import { BrowserRouter,Routes, Route} from "react-router-dom";
 import Er from "./Pages/Er";
-import Cli from "./Pages/Cl1";
+import Cli from "./Pages/Cl2";
 import Ceil from "./Pages/Ceil";
 import Admin from "./Pages/Admin";
 

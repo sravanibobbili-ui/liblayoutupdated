@@ -1,10 +1,10 @@
 import Header from "./Components/Header"
 import { BrowserRouter,Routes, Route} from "react-router-dom";
 import Er from "./Pages/Er";
-import Cli from "./Pages/Cl2";
+import Cli  from "./Pages/Cl2";
 import Ceil from "./Pages/Ceil";
 import Admin from "./Pages/Admin";
-
+import { Example } from "./Pages/Example";
 
 export default function App() {
   return (
@@ -18,6 +18,7 @@ export default function App() {
           <Route path ='/Admin' element={<Admin/>}></Route>
           <Route path ='/Ceil' element={<Ceil/>}></Route>
         </Routes>
+   {/* <Example/> */}
    
     </div>
     </BrowserRouter>

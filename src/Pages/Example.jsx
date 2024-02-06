@@ -6,7 +6,7 @@ import image2 from "./warning.png"
 import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
 
-const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=ER';
+const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=CL1';
 
  const layout = [
   { i: "blue-eyes-dragon", x: 0, y: 0, w: 1, h: 1 },
@@ -16,7 +16,9 @@ const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Ang
   { i: "summoned-skull", x: 4, y: 0, w: 1, h: 1 }
 ];
 
-
+const GridItemWrapper = styled.div`
+  background: #f5f5f5;
+`;
 
 const GridItemContent = styled.div`
   padding: 8px;
@@ -26,7 +28,7 @@ const Root = styled.div`
   padding: 16px;
 `;
 
- const ER = () => {
+export const Example = () => {
     const [posts, setPosts] = useState([]);
     const [values,setValues] = useState([]);
     const dataarray = [];
@@ -61,22 +63,21 @@ const Root = styled.div`
     }, []);
     
   return (
-    <Root style = {{padding:"40px"}}>
-      <h1 style = {{textAlign: "center", margin: "10px"}} > ER </h1>
+    <Root>
         {/* <GridLayout layout = {posts} cols={5}  rowHeight={100} width={1000}> */}
         <DivStyles>
          {posts.map((post,i) => (
            
-           <div key={i} className="post" >
+           <div key={i} className="post">
         
          
             {post.status == 0 ? (
-            <GridItemContent style={{padding:"2px"}}><img src={image1} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
-           ):  <GridItemContent style={{padding:"2px"}}><img src={image} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
-          
+            <GridItemContent><img src={image1} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+           ):  <GridItemContent><img src={image} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+           
             }
             
-            
+        
           
             
             {post.status == 2 ? (
@@ -98,7 +99,6 @@ const Root = styled.div`
     </Root>
   );
 };
-export default ER;
 const DivStyles = styled.div`
 display: grid;
 grid-template-columns: repeat(5, minmax(0px,  2fr) );
@@ -107,7 +107,7 @@ grid-column-gap: 0px;
 grid-row-gap: 0px;
 grid-auto-rows: 45px;
 grid-auto-flow: dense;
-//  .div { grid-area: 4 / 4 / 5 / 5; }
+// .div { grid-area: 4 / 4 / 5 / 5; }
 
     
 }`;

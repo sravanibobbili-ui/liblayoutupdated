@@ -4,6 +4,7 @@ import image from "./occupied.png"
 import image1 from "./initial.png"
 import image2 from "./warning.png"
 import React, { useState, useEffect } from 'react'; 
+import Draggable from "react-draggable";
 import axios from 'axios';
 
 const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=Cl1';
@@ -69,7 +70,7 @@ const Root = styled.div`
         <DivStyles>
         
          {posts.map((post,i) => (
-           
+             <Draggable key={i} defaultPosition={{ x: 0, y: 0 }} disabled>
            <div key={i} className="post">
         
          
@@ -93,7 +94,7 @@ const Root = styled.div`
           
           
            </div>
-          
+           </Draggable>
          ))
          }
       </DivStyles>

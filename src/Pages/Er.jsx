@@ -5,7 +5,7 @@ import image1 from "./initial.png"
 import image2 from "./warning.png"
 import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
-
+import Draggable from 'react-draggable';
 const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=ER';
 
  const layout = [
@@ -62,17 +62,17 @@ const Root = styled.div`
     
   return (
     <Root style = {{padding:"40px"}}>
-      <h1 style = {{textAlign: "center", margin: "10px"}} > ER </h1>
+      <h1 style = {{textAlign: "center", margin: "60px"}} > ER </h1>
         {/* <GridLayout layout = {posts} cols={5}  rowHeight={100} width={1000}> */}
         <DivStyles>
          {posts.map((post,i) => (
-           
+           <Draggable key={i} defaultPosition={{ x: 0, y: 0 }} disabled>
            <div key={i} className="post" >
-        
+       
          
             {post.status == 0 ? (
-            <GridItemContent style={{padding:"2px"}}><img src={image1} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
-           ):  <GridItemContent style={{padding:"2px"}}><img src={image} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+            <GridItemContent style={{padding:"2px"}}><img src={image1} title="{{post.host_name}}{{post.position}}(Available)" height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+           ):  <GridItemContent style={{padding:"2px"}}><img src={image} title="{{post.host_name}}{{post.position}}(Inuse)"  height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
           
             }
             
@@ -88,9 +88,9 @@ const Root = styled.div`
           
            
           
-          
+            
            </div>
-          
+           </Draggable>
          ))
          }
       </DivStyles>
@@ -101,13 +101,25 @@ const Root = styled.div`
 export default ER;
 const DivStyles = styled.div`
 display: grid;
-grid-template-columns: repeat(5, minmax(0px,  2fr) );
+//  grid-template-columns: repeat(5, minmax(300px,  1fr) );
+  grid-template-columns: repeat( 5,1fr);
+//  grid-template-columns: subgrid;
 grid-template-rows: repeat(2, minmax(10px, 5fr));
+grid-gap: 10px
 grid-column-gap: 0px;
 grid-row-gap: 0px;
 grid-auto-rows: 45px;
-grid-auto-flow: dense;
+// grid-auto-flow: dense;
+//  display: flex;
+// flex-wrap: wrap;
 //  .div { grid-area: 4 / 4 / 5 / 5; }
-
+// width: 90%;
+  // min-width: 300px;
+  // flex-grow: 1;
+  // background-color: teal;
+  // color: white;
+  // text-align: center;
+  // padding: 30px 5px;
+  // border: 5px solid white;
     
 }`;

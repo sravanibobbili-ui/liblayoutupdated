@@ -5,6 +5,8 @@ import Cli  from "./Pages/Cl2";
 import Ceil from "./Pages/Ceil";
 import Admin from "./Pages/Admin";
 import { Example } from "./Pages/Example";
+// import GridsterExample from "./Pages/GridsterExample";
+import GridProperty from "./Pages/GridProperty";
 
 export default function App() {
   return (
@@ -18,8 +20,9 @@ export default function App() {
           <Route path ='/Admin' element={<Admin/>}></Route>
           <Route path ='/Ceil' element={<Ceil/>}></Route>
         </Routes>
-   {/* <Example/> */}
-   
+   {/* <Example/>
+   {/* <GridsterExample/> */}
+{/* <GridProperty/> */}
     </div>
     </BrowserRouter>
   );

@@ -6,20 +6,12 @@ import image2 from "./warning.png"
 import React, { useState, useEffect } from 'react'; 
 import Draggable from "react-draggable";
 import axios from 'axios';
+import RGL, { WidthProvider } from "react-grid-layout";
 
+const ReactGridLayout = WidthProvider(RGL);
 const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=Cl1';
 
- const layout = [
-  { i: "blue-eyes-dragon", x: 0, y: 0, w: 1, h: 1 },
-  { i: "dark-magician", x: 1, y: 0, w: 1, h: 1 },
-  { i: "kuriboh", x: 20, y: 0, w: 0.3, h: 0.3 },
-  { i: "spell-caster", x: 3, y: 0, w: 1, h: 1 },
-  { i: "summoned-skull", x: 4, y: 0, w: 1, h: 1 }
-];
-
-const GridItemWrapper = styled.div`
-  background: #f5f5f5;
-`;
+ 
 
 const GridItemContent = styled.div`
   padding: 8px;
@@ -67,16 +59,20 @@ const Root = styled.div`
     <Root style ={{padding:"40px"}}>
         <h1 style = {{textAlign: "center"}} > CL1 </h1>
         {/* <GridLayout layout = {posts} cols={5}  rowHeight={100} width={1000}> */}
-        <DivStyles>
+        <ReactGridLayout
+        rowHeight={50}
+        cols= {24}
+       
+      >
         
          {posts.map((post,i) => (
-             <Draggable key={i} defaultPosition={{ x: 0, y: 0 }} disabled>
-           <div key={i} className="post">
-        
+            
          
+        
+        <div key={i} data-grid={{ x: parseInt(post.X)*1, y: parseInt(post.Y)*1, w: 1 , h: 2, static:true  }}>
             {post.status == 0 ? (
-            <GridItemContent><img src={image1} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
-           ):  <GridItemContent><img src={image} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+            <GridItemContent style={{fontSize:"0.8em"}}><img src={image1} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+           ):  <GridItemContent style={{fontSize:"0.8em"}}><img src={image} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
            
             }
             
@@ -94,24 +90,12 @@ const Root = styled.div`
           
           
            </div>
-           </Draggable>
+        
          ))
          }
-      </DivStyles>
+         </ReactGridLayout>
       {/* </GridLayout> */}
     </Root>
   );
 };
 export default Cl2;
-const DivStyles = styled.div`
-display: grid;
-grid-template-columns: repeat(5, minmax(0px,  2fr) );
-grid-template-rows: repeat(2, minmax(10px, 5fr));
-grid-column-gap: 0px;
-grid-row-gap: 1px;
-grid-auto-rows: 45px;
-grid-auto-flow: dense;
-// .div { grid-area: 4 / 4 / 5 / 5; }
-
-    
-}`;

@@ -75,8 +75,8 @@ const Root = styled.div`
 
 
 {post.status == 0 ? (
-            <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image1} title="{{post.host_name}}{{post.position}}(Available)" height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
-           ):  <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image} title="{{post.host_name}}{{post.position}}(Inuse)"  height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+            <GridItemContent style={{padding:"2px"}}><img src={image1} title="{{post.host_name}}{{post.position}}(Available)" height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+           ):  <GridItemContent style={{padding:"2px"}}><img src={image} title="{{post.host_name}}{{post.position}}(Inuse)"  height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
           
             }
 

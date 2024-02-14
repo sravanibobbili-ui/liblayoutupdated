@@ -1,56 +1,80 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
+import _ from "lodash";
+import RGL, { WidthProvider } from "react-grid-layout";
+import image from "./occupied.png" 
+import image1 from "./initial.png"
+import image2 from "./warning.png"
 import axios from 'axios';
+import  { useState, useEffect } from 'react'; 
+const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=ER';
 
-function GridsterExample() {
-    const [erSystems, setErSystems] = useState(null);
+const ReactGridLayout = WidthProvider(RGL);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+export default class GridsterExample extends React.PureComponent {
+  static defaultProps = {
+    className: "layout",
+    // items: 20,
+    minCols: 56,
+    maxCols: 56,
+    minRows: 30,
+    maxRows: 40,
+    fixedColWidth: 25,
+    fixedRowHeight: 35,
+    // onLayoutChange: function() {},
+    // cols: 12
+  };
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get('https://libapps.tamucc.edu/api/liblayout/read_Avail_Angular.php?param=ER');
-            setErSystems(response.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
+  constructor(props) {
+    super(props);
+    this.state = {
+        posts: []
+      };
+    const layout = this.generateLayout();
+    this.state = { layout };
+  }
 
+  async componentDidMount() {
+    try {
+      const response = await axios.get(API_URL);
+      const { data } = response;
+      this.setState({ posts: data.data });
+      console.log(data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  generateLayout() {
+    const p = this.props;
+    console.log(p);
+    return _.map(new Array(p.items), function(item, i) {
+      const y = _.result(p, "y") || Math.ceil(Math.random() * 4) + 1;
+      return {
+        x: (i * 2) % 12,
+        y: Math.floor(i / 6) * y,
+        w: 2,
+        h: y,
+        i: i.toString()
+      };
+    });
+  }
+
+//   onLayoutChange(layout) {
+//     this.props.onLayoutChange(layout);
+//   }
+
+  render() {
     return (
-        <div style={{ padding: '120px' }}>
-            <h1>ER</h1>
-            {erSystems && (
-                <div className="options-header">
-                    {erSystems.data.map(erSystem => (
-                        <div key={erSystem.host_name}>
-                            <div className="gridster-item" style={{ fontSize: '14px' }}>
-                                {erSystem.status === '0' && (
-                                    <img src="assets/images/free.gif" height="40" width="40"
-                                        alt={`${erSystem.host_name}\n${erSystem.position} (Available)`}
-                                        className="test" />
-                                )}
-                                {erSystem.status === '1' && (
-                                    <img src="assets/images/occupied.gif" height="40" width="40"
-                                        alt={`${erSystem.host_name}\n${erSystem.position} (In-Use)`}
-                                        className="test" />
-                                )}
-                                {erSystem.status === '2' && (
-                                    <img src="assets/images/warning.gif" height="40" width="40"
-                                        alt={`${erSystem.host_name}\n${erSystem.position} (Available)`}
-                                        className="test" />
-                                )}
-                                <br />
-                                {erSystem.position}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+      <ReactGridLayout
+        layout={this.state.layout}
+        onLayoutChange={this.onLayoutChange}
+        {...this.props}
+      >
+        {this.generateDOM()}
+      </ReactGridLayout>
     );
+  }
 }
 
-
-
-export default GridsterExample;
+if (process.env.STATIC_EXAMPLES === true) {
+  import("./test-hook.jsx").then(fn => fn.default(GridsterExample));
+}

@@ -4,9 +4,14 @@ import Er from "./Pages/Er";
 import Cli  from "./Pages/Cl2";
 import Ceil from "./Pages/Ceil";
 import Admin from "./Pages/Admin";
+import axios from "axios";
 import { Example } from "./Pages/Example";
 // import GridsterExample from "./Pages/GridsterExample";
 import GridProperty from "./Pages/GridProperty";
+axios.defaults.baseURL = process.env.BASE_URL;
+axios.defaults.headers.get['Accepts'] = 'application/json';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
 
 export default function App() {
   return (

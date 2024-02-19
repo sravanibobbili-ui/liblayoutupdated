@@ -25,18 +25,12 @@ import Form from 'react-bootstrap/Form';
 import {Row,Col,Container,Button,Card} from 'react-bootstrap';
 import { FaSearchPlus, FaSearchMinus} from 'react-icons/fa';
 import RGL, { WidthProvider } from "react-grid-layout";
+import Dialog from './Dialog';
 
 const ResponsiveReactGridLayout = WidthProvider(RGL);
 
 const API_URL = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=ER';
 const API_URL_1 = 'https://libapps.tamucc.edu/api-staging/liblayout/read_Avail_Angular.php?param=Cl1';
-//  const layout = [
-//   { i: "blue-eyes-dragon", x: 0, y: 0, w: 1, h: 1 },
-//   { i: "dark-magician", x: 1, y: 0, w: 1, h: 1 },
-//   { i: "kuriboh", x: 20, y: 0, w: 0.3, h: 0.3 },
-//   { i: "spell-caster", x: 3, y: 0, w: 1, h: 1 },
-//   { i: "summoned-skull", x: 4, y: 0, w: 1, h: 1 }
-// ];
 
 
 const GridItemContent = styled.div`
@@ -55,6 +49,10 @@ const Root = styled.div`
     const [isZoom,setisZoom]= useState(false);
     const [isAsset,setisAsset]= useState(false);
     const [isRadioSwitchEnabled, setIsRadioSwitchEnabled] = useState(false);
+    const [position, setPosition] = useState({x:0,y:0});
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [currentPost, setCurrentPost] = useState(null);
+
     const handleLayoutChange = () =>
     {
         setisLayout(!isLayout);
@@ -101,6 +99,27 @@ const Root = styled.div`
         fetchData_cl1();
       }, []);
       
+      const handleDrag = (post) =>(e, ui) => {
+        const{ x,y } =ui;
+        setPosition({x,y});
+        console.log('Position X:', ui.x);
+        console.log('Position Y:', ui.y);
+        console.log('Host Name:', post.host_name);
+         setCurrentPost(post);
+      };
+    
+      const updateLayoutDatabase = (e) =>
+      {
+        e.preventDefault();
+        if (currentPost) {
+          console.log('Current Post:', currentPost);
+          // Perform any action you want with the current post data
+      }
+        console.log('Position X:', position.x);
+        console.log('Position Y: ', position.y);
+        console.log('Host Name:', currentPost.host_name);
+        alert(" layout changed")
+      }
   return (
     <Root style = {{padding:"40px"}}>
       <h1 style = {{textAlign: "center", margin: "60px"}} > ER </h1>
@@ -109,23 +128,22 @@ const Root = styled.div`
         rowHeight={30}
         cols= {56}
         // draggableHandle=".react-grid-dragHandleExample" // Specify the handle for dragging
-        isResizable={isLayout}
-        isDroppable={isLayout}
-        isDraggable= {isLayout}
+        // isResizable={isLayout}
+        // isDroppable={isLayout}
+        // isDraggable= {isLayout}
       >
         
             
          {posts.map((post,i) => (
-           
+          
           <div key={i} data-grid={{ x: parseInt(post.X)*1, y: parseInt(post.Y)*1, w: 2 , h: 2, static:true  }}>
+           <Draggable key={i} defaultPosition={{ x: 0, y:0 }} disabled={!isLayout} onStop={handleDrag(post)} >
           
-         
-          
-       
+       <div>
             {post.status == 0 ? (
                
-            <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image1} title="{{post.host_name}}{{post.position}}(Available)" height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
-           ):  <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image} title="{{post.host_name}}{{post.position}}(Inuse)"  height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+            <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image1} title={`${post.host_name}${post.position}(Available)`} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
+           ):  <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image} title={`${post.host_name}${post.position}(Inuse)`} height="40" width="40" className="image_fluid" />{post.position}</GridItemContent>
            
            
         }
@@ -133,10 +151,11 @@ const Root = styled.div`
            <img src={image2} height="40" width="40" className="image_fluid" alt={post.position} />
            ): null
             }
-          
+            </div>
+          </Draggable>
           </div>
    
-    
+          
          ))
          
          }
@@ -176,7 +195,8 @@ const Root = styled.div`
       >
          {values.map((value,i) => (
           <div key={i} data-grid={{ x: parseInt(value.X)*1, y: parseInt(value.Y)*1, w: 1 , h: 2, static:true  }}>
-         
+          <Draggable key={i} defaultPosition={{ x: 0, y: 0 }} disabled={!isLayout}  onStop={handleDrag}>
+            <div>
            {value.status == 0 ? (
             <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image1} title="{{value.host_name}}{{value.position}}(Available)" height="40" width="40" className="image_fluid" />{value.position}</GridItemContent>
            ):  <GridItemContent style={{padding:"2px",fontSize:"0.8em"}}><img src={image} title="{{value.host_name}}{{value.position}}(Inuse)"  height="40" width="40" className="image_fluid" />{value.position}</GridItemContent>
@@ -193,7 +213,8 @@ const Root = styled.div`
             
            
            
-          
+            </div>
+          </Draggable>
             
            </div>
           
@@ -228,7 +249,8 @@ const Root = styled.div`
                          <label style ={{marginRight: '10px',margin: '10px'}}>
                             <input  style={{marginRight: '5px'}} type="checkbox" checked={isLayout}  onChange={handleLayoutChange} />
                              Edit Layout</label>
-                          <button style={{backgroundColor: isLayout?'red':'gray'}} disabled={!isLayout}>Save</button>
+                          <button style={{backgroundColor: isLayout?'red':'gray'}} disabled={!isLayout} onClick={updateLayoutDatabase} >Save</button>
+                          
                           </Form.Group>
                           <Form.Group style ={{marginRight: '10px'}} >
                          <label style ={{marginRight: '10px',margin: '10px'}}>
